@@ -1,0 +1,6 @@
+package com.inyc.utils {	import com.inyc.utils.debug.Logger;
+	
+	import flash.text.TextField;
+	import flash.text.TextFormat;	
+
+	/**	 * @author stevewarren	 */	public class TextFieldUtils {				public static function getTextField(font:String="Arial",size:Number=10,color:Number=0xff6600,bold:Boolean=true):TextField {			//log("getTextField()");						var tField:TextField = new TextField();						var tf:TextFormat = tField.getTextFormat();				tf.font = font;				tf.bold = bold;				tf.color = color;				tf.size = size;						tField.defaultTextFormat = tf;						return tField;		}				public static function getTextFormat(font:String="Arial",size:Number=10,color:Number=0xFF66FF,bold:Boolean=true):TextFormat {			//log("getTextFormat()");						var tf:TextFormat = new TextFormat();				tf.font = font;				tf.bold = bold;				tf.color = color;				tf.size = size;							return tf;		}								private static function log(logItem:*):void {			Logger.log(logItem,["utils"],true);		}			}}

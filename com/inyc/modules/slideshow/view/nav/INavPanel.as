@@ -1,0 +1,1 @@
+package com.inyc.modules.slideshow.view.nav {	import com.inyc.modules.slideshow.SlideshowController;		/**	 * @author stevewarren	 */	public interface INavPanel{		function setController(pController:SlideshowController):void;		function setPhotoIndex(pIndex:uint):void;	}}

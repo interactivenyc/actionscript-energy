@@ -1,0 +1,6 @@
+package com.inyc.application.core {		import flash.display.Stage;			import com.inyc.events.Events;		import com.inyc.events.GenericDataEvent;		import com.inyc.utils.debug.Logger;
+	
+	import flash.display.MovieClip;
+	import flash.events.Event;	
+
+	/**	 * @author stevewarren	 */	public class CoreMovieClip extends MovieClip {		public function CoreMovieClip() {			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);			addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);		}				protected function init():void{					}				protected function onAddedToStage(e:Event):void {			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);			init();		}				protected function onRemovedFromStage(e:Event):void {			removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);		}					protected function log(logItem:*, ...args):void{			var category:Array = [this.toString().replace("[object ", "").replace("]", "")];			Logger.log(logItem,category,true);						if (args.length > 0) {				Logger.log(args,[category[0]+"..."],true);        	}		}	}}
