@@ -1,1 +1,0 @@
-package com.inyc.components {	import com.inyc.application.core.CoreMovieClip;		/**	 * @author stevewarren	 */	public class Keybord extends CoreMovieClip {		public function Keybord() {			super();			log("Keyboard CONSTRUCTOR");		}	}}
