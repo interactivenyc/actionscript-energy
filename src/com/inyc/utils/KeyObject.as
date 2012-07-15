@@ -1,5 +1,5 @@
 package com.inyc.utils {
-	import org.casalib.util.StageReference;	
+	//import org.casalib.util.StageReference;	
 	
 	import com.inyc.events.Events;	
 	import com.inyc.events.GenericDataEvent;		import com.inyc.utils.debug.Logger;
@@ -66,7 +66,7 @@ package com.inyc.utils {
 		
 		private function log(logItem:*,category:Array=null):void{
 			var e:GenericDataEvent = new GenericDataEvent(Events.LOG_MESSAGE, {logItem:logItem});
-			StageReference.getStage().dispatchEvent(e);
+			//StageReference.getStage().dispatchEvent(e);
 			
 			if(category==null) category = ["KeyObject"];
 			Logger.log(logItem,category,true);
