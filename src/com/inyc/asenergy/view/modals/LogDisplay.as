@@ -1,6 +1,5 @@
 package com.inyc.asenergy.view.modals
 {
-	import com.inyc.asenergy.events.GenericDataEvent;
 	import com.inyc.asenergy.view.components.DialogButton;
 	
 	import flash.events.MouseEvent;

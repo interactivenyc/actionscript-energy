@@ -1,24 +1,16 @@
 package com.inyc.asenergy.view.components
 {
-	import com.adobe.images.PNGEncoder;
 	import com.inyc.asenergy.controller.AppController;
 	import com.inyc.asenergy.events.AppEvents;
 	import com.inyc.asenergy.events.GenericDataEvent;
-	import com.inyc.asenergy.models.data.Story;
 	
 	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
-	import flash.events.MouseEvent;
 	import flash.events.SecurityErrorEvent;
-	import flash.filesystem.File;
-	import flash.filesystem.FileMode;
-	import flash.filesystem.FileStream;
 	import flash.net.URLRequest;
 	import flash.text.TextField;
-	import flash.utils.ByteArray;
 
 	public class ListingsItem extends CoreMovieClip
 	{
@@ -26,7 +18,7 @@ package com.inyc.asenergy.view.components
 		public var title:TextField;
 		public var btn_delete:MCButton;
 		
-		protected var _listingsData:Story;
+		protected var _listingsData:Object;
 		protected var _loader:CacheLoader;
 		protected var _thumbnail:Bitmap;
 		protected var _thumbnailLoaded:Boolean = false;
@@ -41,7 +33,7 @@ package com.inyc.asenergy.view.components
 		
 		
 		public function set listingsData(listingsData:Object):void{
-			_listingsData = listingsData as Story;
+			_listingsData = listingsData as Object;
 		}
 		
 		public function get listingsData():Object{

@@ -9,7 +9,7 @@ package com.inyc.asenergy.view.components
 	
 	public class CoreButton extends CoreMovieClip
 	{
-		public var bg:MovieClip;
+		//public var bg:MovieClip;
 		
 		public function CoreButton(){
 			//super();

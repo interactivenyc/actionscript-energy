@@ -1,6 +1,5 @@
 package com.inyc.asenergy.view.components
 {
-	import com.inyc.asenergy.events.CoreEventDispatcher;
 	import com.inyc.asenergy.events.AppEvents;
 	import com.inyc.asenergy.events.GenericDataEvent;
 	
