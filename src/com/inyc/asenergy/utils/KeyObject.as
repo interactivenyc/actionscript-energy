@@ -1,7 +1,7 @@
 package com.inyc.asenergy.utils {
 	//import org.casalib.util.StageReference;	
 	
-	import com.inyc.asenergy.events.Events;	
+	import com.inyc.asenergy.events.AppEvents;	
 	import com.inyc.asenergy.events.GenericDataEvent;		import com.inyc.asenergy.utils.debug.Logger;
 	
 	import flash.display.Stage;
@@ -65,7 +65,7 @@ package com.inyc.asenergy.utils {
 		}
 		
 		private function log(logItem:*,category:Array=null):void{
-			var e:GenericDataEvent = new GenericDataEvent(Events.LOG_MESSAGE, {logItem:logItem});
+			var e:GenericDataEvent = new GenericDataEvent(AppEvents.LOG_MESSAGE, {logItem:logItem});
 			//StageReference.getStage().dispatchEvent(e);
 			
 			if(category==null) category = ["KeyObject"];

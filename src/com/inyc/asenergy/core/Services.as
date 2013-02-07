@@ -1,12 +1,12 @@
 package com.inyc.asenergy.core {
-	import com.inyc.asenergy.events.Events;	import com.inyc.asenergy.events.GenericDataEvent;	import com.inyc.asenergy.utils.debug.Logger;		import flash.events.Event;	import flash.events.EventDispatcher;	import flash.external.ExternalInterface;		/**
+	import com.inyc.asenergy.events.AppEvents;	import com.inyc.asenergy.events.GenericDataEvent;	import com.inyc.asenergy.utils.debug.Logger;		import flash.events.Event;	import flash.events.EventDispatcher;	import flash.external.ExternalInterface;		/**
 	 * @author stevewarren
 	 */
 	public class Services extends EventDispatcher {
 
 		public function Services() {
 			log("CONSTRUCTOR");
-			dispatchEvent(new GenericDataEvent(Events.SHOW_LOADER));
+			dispatchEvent(new GenericDataEvent(AppEvents.SHOW_LOADER));
 			
 			//HERE IS THE TEMPLATE FOR ADDING JAVASCRIPT LISTENERS
 			log("ExternalInterface.addCallback");
@@ -31,8 +31,8 @@ package com.inyc.asenergy.core {
 			log("servicesReady");
 			log("**************************************");
 			
-			dispatchEvent(new GenericDataEvent(Events.HIDE_LOADER));
-			dispatchEvent(new GenericDataEvent(Events.SERVICES_READY));
+			dispatchEvent(new GenericDataEvent(AppEvents.HIDE_LOADER));
+			dispatchEvent(new GenericDataEvent(AppEvents.SERVICES_READY));
 		}
 
 		

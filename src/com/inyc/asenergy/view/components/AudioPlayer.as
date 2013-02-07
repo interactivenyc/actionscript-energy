@@ -1,35 +1,17 @@
-package com.inyc.asenergy.modules.playback {
-	import com.greensock.TweenLite;
-	
-	import flash.display.MovieClip;
-	import flash.events.Event;
-	import flash.events.EventDispatcher;
-	import flash.media.Sound;
-	import flash.media.SoundChannel;
-	import flash.media.SoundLoaderContext;
-	import flash.media.SoundMixer;
-	import flash.media.SoundTransform;
-	import flash.net.URLRequest;
-	import flash.utils.getDefinitionByName;
-	
-	import gs.TweenLite;
-
-	/**
+package com.inyc.asenergy.view.components {
+	import com.greensock.TweenLite;		import flash.events.Event;	import flash.media.Sound;	import flash.media.SoundChannel;	import flash.media.SoundLoaderContext;	import flash.media.SoundMixer;	import flash.media.SoundTransform;	import flash.net.URLRequest;	import flash.utils.ByteArray;	import flash.utils.getDefinitionByName;		/**
 	 * @author stevewarren
 	 */
-	public class AudioPlayer extends MovieClip {
+	public class AudioPlayer {
 		private var _volume:Number = 1;
 		private var _soundChannels:Array;
 		private var _soundNames:Array;
 		private var _sounds:Array;
 		
 		private var _tweenArray:Array;
-		
-		public static var EVENT_SOUND_STARTED:String = "EVENT_SOUND_STARTED";
-		public static var EVENT_SOUND_FINISHED:String = "EVENT_SOUND_FINISHED";
 
 		public function AudioPlayer(){
-			//log("CONSTRUCTOR");
+			log("CONSTRUCTOR");
 			init();
 		}
 		
@@ -38,6 +20,8 @@ package com.inyc.asenergy.modules.playback {
 			_soundNames = new Array();
 			_sounds = new Array();
 			_tweenArray = new Array();
+			
+			//playInternalSound("music0",0,4);
 		}
 		
 		
@@ -47,39 +31,33 @@ package com.inyc.asenergy.modules.playback {
 		 * 
 		 */
 		
-		public function playInternalSound(soundfile:String, loops:uint = 0, fadeTime:Number = 0, startTime:Number = 0):Sound{
+		public function playInternalSound(soundfile:String, loops:uint = 0, fadeTime:Number = 0):Sound{
 			//log("AudioPlayer playInternalSound() soundfile:"+soundfile + ", fadeTime:"+fadeTime);
 			
 			var musicfile:Class = getDefinitionByName(soundfile) as Class;
 			var sound:Sound = new musicfile();
-			//var st:SoundTransform = new SoundTransform(_volume);
+			var st:SoundTransform = new SoundTransform(_volume);
 			
-			addEventListener(Event.ENTER_FRAME, checkSoundStart);
-			
-			playSound(sound, soundfile, startTime, loops, fadeTime);
+			playSound(sound, soundfile, loops, fadeTime);
 			return sound;
 		}
 		
-		public function playExternalSound(soundURL:String, loops:uint = 0, fadeTime:Number = 0, startTime:Number = 10):Sound{
+		public function playExternalSound(soundURL:String, loops:uint = 0, fadeTime:Number = 0, checkLoaderContext:Boolean = false):Sound{
 			//log("AudioPlayer playExternalSound() soundURL:"+soundURL);
 			
 			var url:URLRequest = new URLRequest(soundURL);
-			var slc:SoundLoaderContext = new SoundLoaderContext(1000);
+			var slc:SoundLoaderContext = new SoundLoaderContext(1000, checkLoaderContext);
 			var sound:Sound = new Sound(url, slc);
 			
-			playSound(sound, soundURL, startTime, loops, fadeTime);
-			
-			//used for checking to see when a streaming sound actually starts, after it's been buffered
-			addEventListener(Event.ENTER_FRAME, checkSoundStart);
-			
+			playSound(sound, soundURL, loops, fadeTime);
 			return sound;
 		}
 		
-		public function playSound(sound:Sound, soundName:String, startTime:Number, loops:uint = 0, fadeTime:Number = 0){
+		public function playSound(sound:Sound, soundName:String, loops:uint = 0, fadeTime:Number = 0){
 			//log("AudioPlayer playSound() soundfile:"+soundName + ", fadeTime:"+fadeTime);
 			
 			var st:SoundTransform = new SoundTransform(0);
-			var sc:SoundChannel = sound.play(startTime,loops,st);
+			var sc:SoundChannel = sound.play(10,loops,st);
 			
 			var tween = TweenLite.to(st, fadeTime, {volume:_volume, onUpdate:fadeSound, onUpdateParams:[sc,st], onComplete:removeTween, onCompleteParams:[tween]});
 			//var tween = TweenLite.to(st, fadeTime, {volume:_volume, onComplete:function(){log("tweenComplete")}});
@@ -90,36 +68,52 @@ package com.inyc.asenergy.modules.playback {
 			_tweenArray.push(tween);
 			
 			sc.addEventListener(Event.SOUND_COMPLETE, onSoundComplete);
-			
 		}
 		
-		private function checkSoundStart(e:Event){
-			//log("checkSoundStart");
-			if (_soundChannels[_soundChannels.length-1].position > 0){
-				removeEventListener(Event.ENTER_FRAME, checkSoundStart);
-				//log("SOUND HAS STARTED");
-				dispatchEvent(new Event(EVENT_SOUND_STARTED));
-			}
-		}
-		
-
 		
 		public function stopSound(soundName:String, fadeTime:Number = 0){
 			//log("stopSound sound:"+soundName+", fadeTime:"+fadeTime);
-			
-			if (_soundNames.lastIndexOf(soundName) < 0) return;
-			
 			var sc:SoundChannel = _soundChannels[_soundNames.lastIndexOf(soundName)];
+			
+			//log(sc);
+			
 			var st:SoundTransform = new SoundTransform(_volume);
 			
 			var tween = TweenLite.to(st, fadeTime, {volume:0, onUpdate:fadeSound, onUpdateParams:[sc,st], onComplete:stopSoundAfterTween, onCompleteParams:[soundName, tween]});
+			//var tween = TweenLite.to(st, fadeTime, {volume:0, onComplete:stopSoundAfterTween(soundName)});
 			
 			_tweenArray.push(tween);
+			
 		}
 		
-		public function stopAllSounds() {
-			SoundMixer.stopAll();
-			killTweens();
+//		public function stopAllSounds() {
+//			var tempint:int = _soundNames.length;
+//			for(var i:int = 0; i<tempint; ++i){
+//				stopSound(_soundNames[i],5);
+//			}
+//			//SoundMixer.stopAll();
+//			
+//		}
+		
+		public function stopAllSounds(time:Number = 0){
+			var tempint:int = _soundChannels.length;
+			var sc:SoundChannel;// = _soundChannels[_soundNames.lastIndexOf(soundName)];
+			
+			//log(sc);
+			
+			var st:SoundTransform = new SoundTransform(_volume);
+			
+			
+			for(var i:int = 0; i<tempint; i++){
+				sc = _soundChannels[i];
+				var tween  = TweenLite.to(st, time, {volume:0, onUpdate:fadeSound, onUpdateParams:[sc,st], onComplete:stopSoundAfterTween, onCompleteParams:[sc, tween]});
+				_tweenArray.push(tween);
+			};
+			
+			//var tween = TweenLite.to(st, fadeTime, {volume:0, onComplete:stopSoundAfterTween(soundName)});
+			
+			
+			
 		}
 
 		private function fadeSound(sc:SoundChannel, st:SoundTransform){
@@ -129,7 +123,10 @@ package com.inyc.asenergy.modules.playback {
 		}
 		
 		private function removeTween(t:TweenLite){
+			//log("removeTween:"+t);
+			
 			//if (t) t.complete();
+			//log("_tweenArray:"+_tweenArray);
 		}
 		
 		public function killTweens(){
@@ -187,7 +184,11 @@ package com.inyc.asenergy.modules.playback {
 		
 		private function onSoundComplete(e:Event){
 			//log("onSoundComplete()");
+			//log(e.target);
+			//log(_soundChannels.lastIndexOf(e.target));
+			
 			removeSoundByChannel(e.target as SoundChannel);
+			
 		}
 		
 		
@@ -200,16 +201,25 @@ package com.inyc.asenergy.modules.playback {
 			}
 		}
 		
-		private function stopSoundAfterTween(soundName:String, tween:TweenLite){
+		private function stopSoundAfterTween(sc:SoundChannel, tween:TweenLite){
 			//log("stopSoundAfterTween() soundName:"+soundName);
 			
-			removeSoundByName(soundName);
+			removeSoundByChannel(sc);
 			removeTween(tween);
 		}
 		
+		public function getSpectrum(e:Event = null):ByteArray{
+
+				var ba:ByteArray = new ByteArray();
+				SoundMixer.computeSpectrum(ba,true,0);
+				return ba;
+	
+			
+		} 
+		
 		
 		private function log(msg){
-			//trace("[AudioPlayer] " + msg);
+			trace("[AudioPlayer] " + msg);
 		}
 		
 		

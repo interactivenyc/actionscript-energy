@@ -1,4 +1,4 @@
-package com.inyc.drupal {
+package com.inyc.asenergy.modules.drupal {
 
 	/**
 	 * @author stevewarren
