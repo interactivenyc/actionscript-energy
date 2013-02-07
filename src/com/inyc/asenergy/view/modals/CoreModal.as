@@ -68,7 +68,7 @@ package com.inyc.asenergy.view.modals
 			_blocker = MovieClipUtils.getFilledMC(1200, 900, 0x000000);
 			_blocker.x = -x;
 			_blocker.y = -y;
-			_blocker.alpha = 0;
+			_blocker.alpha = .1;
 			_blocker.mouseEnabled = false;
 			addChildAt(_blocker,0);
 		}

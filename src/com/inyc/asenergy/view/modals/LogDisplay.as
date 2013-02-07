@@ -29,7 +29,7 @@ package com.inyc.asenergy.view.modals
 			
 			for (var i:int=0;i<_dialogButtons.length;i++){
 				dialogButton = _dialogButtons[i];
-				dialogButton.y = 800;
+				dialogButton.y = bg.height - 36;
 				
 				addChild(dialogButton);
 			}
@@ -45,7 +45,7 @@ package com.inyc.asenergy.view.modals
 			
 			btn_datasource = new DialogButton("HOME", goHome);
 			btn_datasource.x = _dialogButtons[1].x + _dialogButtons[1].width + 20;
-			btn_datasource.y = 800;
+			btn_datasource.y = dialogButton.y
 			addChild(btn_datasource);
 		}
 		

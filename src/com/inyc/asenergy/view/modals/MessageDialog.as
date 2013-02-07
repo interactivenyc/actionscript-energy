@@ -3,11 +3,12 @@ package com.inyc.asenergy.view.modals {
 	
 	import com.inyc.asenergy.events.AppEvents;
 	import com.inyc.asenergy.events.GenericDataEvent;
+	import com.inyc.asenergy.view.components.DialogButton;
 	
+	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.text.TextField;
-	import com.inyc.asenergy.view.components.DialogButton;
 	
 	/**
 	 * @author stevewarren
@@ -98,18 +99,24 @@ package com.inyc.asenergy.view.modals {
 			
 			for (var i:int=0;i<_dialogButtons.length;i++){
 				dialogButton = _dialogButtons[i];
-				dialogButton.y = bg.height - 100;
+				dialogButton.y = bg.height - dialogButton.height - 16;
 				
 				addChild(dialogButton);
 			}
 			
 			if (_dialogButtons.length == 1){
-				_dialogButtons[0].x = 20;
+				centerDisplayObject(_dialogButtons[0]);
 				_dialogButtons[0].setButtonSize(DialogButton.BTN_SIZE_LARGE);
 			}else if (_dialogButtons.length == 2){
 				_dialogButtons[0].x = 20;
 				_dialogButtons[1].x = 182;
 			}
+		}
+		
+		protected function centerDisplayObject(displayObject:DisplayObject):void{
+			log("centerDisplayObject");
+			displayObject.x = (bg.width/2) - (displayObject.width/2);
+			//displayObject.y = (bg.height/2) - (displayObject.height/2);
 		}
 		
 		

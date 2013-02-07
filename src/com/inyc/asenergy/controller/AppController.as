@@ -1,11 +1,18 @@
 package com.inyc.asenergy.controller
 {
+	import com.inyc.asenergy.events.AppEvents;
+	import com.inyc.asenergy.events.GenericDataEvent;
+	import com.inyc.asenergy.utils.MovieClipUtils;
 	import com.inyc.asenergy.view.components.CoreMovieClip;
+	import com.inyc.asenergy.view.components.DialogButton;
 	import com.inyc.asenergy.view.modals.CoreModal;
 	import com.inyc.asenergy.view.modals.Loader;
+	import com.inyc.asenergy.view.modals.LogDisplay;
 	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
 
@@ -35,9 +42,30 @@ package com.inyc.asenergy.controller
 			_openModals = new Vector.<CoreModal>;
 			_viewContainer = new CoreMovieClip();
 			addChild(_viewContainer);
+			
+			_logButton = MovieClipUtils.getLibraryMC("logButton");
+			_logButton.x = 25;
+			_logButton.y = 25;
+			_logButton.alpha = .5;
+			_logButton.addEventListener(MouseEvent.CLICK, showLog);
+			addChild(_logButton);
 		}
 		
+		protected function showLog(e:Event = null):void{
+			log("showLog");
+			var buttons:Vector.<DialogButton> = new Vector.<DialogButton>;
+			var button:DialogButton = new DialogButton("OK", closeTopModal);
+			buttons.push(button);
+			button = new DialogButton("RESET LOG");
+			buttons.push(button);
+			
+			var messageDialog:LogDisplay = new LogDisplay("Log File", LOG_OUTPUT, buttons);
+			_eventDispatcher.dispatchEvent(new GenericDataEvent(AppEvents.SHOW_MESSAGE_DIALOG, {messageDialog:messageDialog}));
+		}
 		
+		protected function resetLog(e:Event = null):void{
+			LOG_OUTPUT == "";
+		}
 		
 		/*********************************************************************
 		 * MODAL DISPLAY
