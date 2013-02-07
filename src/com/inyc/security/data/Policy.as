@@ -1,1 +1,0 @@
-﻿package com.inyc.security.data {	/**	* Policy	* 	*/	    public class Policy 	{				public var ref:String;		public function data(p_ref:String) : void		{			ref = p_ref;		}	    }}

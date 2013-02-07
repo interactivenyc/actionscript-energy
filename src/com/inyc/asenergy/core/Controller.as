@@ -1,0 +1,3 @@
+package com.inyc.asenergy.core {	import com.inyc.asenergy.core.Services;
+	import com.inyc.asenergy.components.DialogBox;	
+	/**	 * @author stevewarren	 */	public class Controller extends CoreMovieClip {				public function Controller() {			super();		}				public function get currentDialog():DialogBox {			return new DialogBox();		}				public function get currentView():View {			return new View();		}				public function get services():Services {			return new Services();		}				public static function getInstance():Controller{			return new Controller();		}			}}

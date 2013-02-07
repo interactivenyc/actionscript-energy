@@ -1,1 +1,0 @@
-package com.inyc.modules.slideshow.view {	import com.inyc.modules.slideshow.SlideshowController;			/**	 * @author stevewarren	 */	public interface IPhotoView {		function loadImage(index:uint):void		function setController(pController:SlideshowController):void		function get imageLoading():Boolean;	}}
