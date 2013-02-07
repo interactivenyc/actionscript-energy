@@ -1,0 +1,12 @@
+../../shared/templates/aaaRock/m2g_aaaRock.fla
+../../shared/templates/adultContemp/m2g_adultContemp.fla
+../../shared/templates/alternativeRock/m2g_alternativeRock.fla
+../../shared/templates/classicRock/m2g_classicRock.fla
+../../shared/templates/country/m2g_country.fla
+../../shared/templates/hipHop/m2g_hipHop.fla
+../../shared/templates/jazz/m2g_jazz.fla
+../../shared/templates/mainRock/m2g_mainRock.fla
+../../shared/templates/pop/m2g_pop.fla
+../../shared/templates/RandB/m2g_RandB.fla
+../../shared/templates/jack/m2g_jack.fla
+../../shared/templates/liteAC/m2g_liteAC.fla

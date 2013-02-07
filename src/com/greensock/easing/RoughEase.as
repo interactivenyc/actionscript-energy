@@ -1,12 +1,12 @@
 /**
- * VERSION: 0.7
- * DATE: 2011-11-29
+ * VERSION: 0.8
+ * DATE: 2012-05-20
  * AS3
  * UPDATES AND DOCS AT: http://www.greensock.com/roughease/
  **/
 package com.greensock.easing {
 /**
- * Most easing equations give a smooth, gradual transition between the start and end values, but RoughEase provides
+ * [AS3/AS2 only] Most easing equations give a smooth, gradual transition between the start and end values, but RoughEase provides
  * an easy way to get a rough, jagged effect instead. You can define an ease that it will use as a template (like a
  * general guide - Linear.easeNone is the default) and then it will randomly plot points that wander from that template. 
  * The strength parameter controls how far from the template ease the points are allowed to go (a small number like
@@ -23,17 +23,17 @@ package com.greensock.easing {
  * 
  * //or create an instance directly<br />
  * var rough:RoughEase = new RoughEase(1.5, 30, true, Strong.easeOut, "none", true, "superRoughEase");<br />
- * TweenLite.to(mc, 3, {y:300, ease:rough.ease});<br /><br />
+ * TweenLite.to(mc, 3, {y:300, ease:rough});<br /><br />
  * 
  * //and later, you can find the ease by name like:<br />
  * TweenLite.to(mc, 3, {y:300, ease:RoughEase.byName("superRoughEase")});
  * </code><br /><br />
  * 
- * <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
+ * <b>Copyright 2010-2013, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for <a href="http://www.greensock.com/club/">Club GreenSock</a> members, the software agreement that was issued with the membership.
  * 
  * @author Jack Doyle, jack@greensock.com
  */	 
-	public class RoughEase {		
+	public class RoughEase extends Ease {		
 		/** @private **/
 		private static var _lookup:Object = {}; //keeps track of all named instances so we can find them in byName().
 		/** @private **/
@@ -57,7 +57,7 @@ package com.greensock.easing {
 		 * @param randomize to randomize the placement of the points, set randomize to true (otherwise the points will zig-zag evenly across the ease)
 		 * @param name a name to associate with the ease so that you can use RoughEase.byName() to look it up later. Of course you should always make sure you use a unique name for each ease (if you leave it blank, a name will automatically be generated). 
 		 */
-		public function RoughEase(strength:Number=1, points:uint=20, restrictMaxAndMin:Boolean=false, templateEase:Function=null, taper:String="none", randomize:Boolean=true, name:String="") {
+		public function RoughEase(strength:Number=1, points:uint=20, restrictMaxAndMin:Boolean=false, templateEase:Ease=null, taper:String="none", randomize:Boolean=true, name:String="") {
 			if (name == "") {
 				_name = "roughEase" + (_count++);
 			} else {
@@ -74,7 +74,7 @@ package com.greensock.easing {
 			var i:int = points;
 			while (--i > -1) {
 				x = randomize ? Math.random() : (1 / points) * i;
-				y = (templateEase != null) ? templateEase(x, 0, 1, 1) : x;
+				y = (templateEase != null) ? templateEase.getRatio(x) : x;
 				if (taper == "none") {
 					bump = strength;
 				} else if (taper == "out") {
@@ -120,6 +120,8 @@ package com.greensock.easing {
 		}
 		
 		/**
+		 * @private
+		 * DEPRECIATED
 		 * This static function provides a quick way to create a RoughEase and immediately reference its ease function 
 		 * in a tween, like:<br /><br /><code>
 		 * 
@@ -135,47 +137,42 @@ package com.greensock.easing {
 		 * @param name a name to associate with the ease so that you can use RoughEase.byName() to look it up later. Of course you should always make sure you use a unique name for each ease (if you leave it blank, a name will automatically be generated). 
 		 * @return easing function
 		 */
-		public static function create(strength:Number=1, points:uint=20, restrictMaxAndMin:Boolean=false, templateEase:Function=null, taper:String="none", randomize:Boolean=true, name:String=""):Function {
-			var re:RoughEase = new RoughEase(strength, points, restrictMaxAndMin, templateEase, taper, randomize, name);
-			return re.ease;
+		public static function create(strength:Number=1, points:uint=20, restrictMaxAndMin:Boolean=false, templateEase:Ease=null, taper:String="none", randomize:Boolean=true, name:String=""):Ease {
+			return new RoughEase(strength, points, restrictMaxAndMin, templateEase, taper, randomize, name);
 		}
 		
 		/**
 		 * Provides a quick way to look up a RoughEase by its name.
 		 * 
 		 * @param name the name of the RoughEase
-		 * @return easing function from the RoughEase associated with the name
+		 * @return the RoughEase associated with the name
 		 */
-		public static function byName(name:String):Function {
-			return _lookup[name].ease;
+		public static function byName(name:String):Ease {
+			return _lookup[name];
 		}
-		
+			
 		/**
-		 * Easing function that interpolates the numbers
+		 * Translates the tween's progress ratio into the corresponding ease ratio. This is the heart of the Ease, where it does all its work.
 		 * 
-		 * @param t time
-		 * @param b start
-		 * @param c change
-		 * @param d duration
-		 * @return Result of the ease
+		 * @param p progress ratio (a value between 0 and 1 indicating the progress of the tween/ease)
+		 * @return translated number
 		 */
-		public function ease(t:Number, b:Number, c:Number, d:Number):Number {
-			var time:Number = t / d;
-			var p:EasePoint;
-			if (time < 0.5) {
-				p = _first;
-				while (p.time <= time) {
-					p = p.next;
+		override public function getRatio(p:Number):Number {
+			var pnt:EasePoint;
+			if (p < 0.5) {
+				pnt = _first;
+				while (pnt.time <= p) {
+					pnt = pnt.next;
 				}
-				p = p.prev;
+				pnt = pnt.prev;
 			} else {
-				p = _last;
-				while (p.time >= time) {
-					p = p.prev;
+				pnt = _last;
+				while (pnt.time >= p) {
+					pnt = pnt.prev;
 				}
 			}
 			
-			return b + (p.value + ((time - p.time) / p.gap) * p.change) * c;
+			return (pnt.value + ((p - pnt.time) / pnt.gap) * pnt.change);
 		}
 		
 		/** Disposes the RoughEase so that it is no longer stored for easy lookups by name with <code>byName()</code>, releasing it for garbage collection. **/
