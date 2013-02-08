@@ -29,7 +29,7 @@ package com.inyc.asenergy.view.modals
 			
 			for (var i:int=0;i<_dialogButtons.length;i++){
 				dialogButton = _dialogButtons[i];
-				dialogButton.y = bg.height - 36;
+				dialogButton.y = bg.height - 50;
 				
 				addChild(dialogButton);
 			}

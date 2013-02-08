@@ -44,9 +44,8 @@ package com.inyc.asenergy.controller
 			addChild(_viewContainer);
 			
 			_logButton = MovieClipUtils.getLibraryMC("logButton");
-			_logButton.x = 25;
-			_logButton.y = 25;
-			_logButton.alpha = .5;
+			_logButton.x = 10;
+			_logButton.y = 10;
 			_logButton.addEventListener(MouseEvent.CLICK, showLog);
 			addChild(_logButton);
 		}
