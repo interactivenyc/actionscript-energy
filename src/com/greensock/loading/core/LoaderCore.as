@@ -35,9 +35,8 @@ package com.greensock.loading.core {
 /**
  * Serves as the base class for GreenSock loading tools like <code>LoaderMax, ImageLoader, XMLLoader, SWFLoader</code>, etc. 
  * There is no reason to use this class on its own. Please see the documentation for the other classes.
- * <br /><br />
  * 
- * <b>Copyright 2012, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
+ * <p><strong>Copyright 2013, GreenSock. All rights reserved.</strong> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for <a href="http://www.greensock.com/club/">Club GreenSock</a> members, the software agreement that was issued with the membership.</p>
  * 
  * @author Jack Doyle, jack@greensock.com
  */	
@@ -295,23 +294,23 @@ package com.greensock.loading.core {
 		 * Immediately prioritizes the loader inside any LoaderMax instances that contain it,
 		 * forcing it to the top position in their queue and optionally calls <code>load()</code>
 		 * immediately as well. If one of its parent LoaderMax instances is currently loading a 
-		 * different loader, that one will be temporarily cancelled. <br /><br />
+		 * different loader, that one will be temporarily cancelled. 
 		 * 
-		 * By contrast, when <code>load()</code> is called, it doesn't change the loader's position/index 
+		 * <p>By contrast, when <code>load()</code> is called, it doesn't change the loader's position/index 
 		 * in any LoaderMax queues. For example, if a LoaderMax is working on loading the first object in 
 		 * its queue, you can call load() on the 20th item and it will honor your request without 
 		 * changing its index in the queue. <code>prioritize()</code>, however, affects the position 
-		 * in the queue and optionally loads it immediately as well.<br /><br />
+		 * in the queue and optionally loads it immediately as well.</p>
 		 * 
-		 * So even if your LoaderMax hasn't begun loading yet, you could <code>prioritize(false)</code> 
+		 * <p>So even if your LoaderMax hasn't begun loading yet, you could <code>prioritize(false)</code> 
 		 * a loader and it will rise to the top of all LoaderMax instances to which it belongs, but not 
 		 * start loading yet. If the goal is to load something immediately, you can just use the 
-		 * <code>load()</code> method.<br /><br />
+		 * <code>load()</code> method.</p>
 		 * 
-		 * You may use the static <code>LoaderMax.prioritize()</code> method instead and simply pass 
-		 * the name or url of the loader as the first parameter like:<br /><br /><code>
+		 * <p>You may use the static <code>LoaderMax.prioritize()</code> method instead and simply pass 
+		 * the name or url of the loader as the first parameter like:</p><p><code>
 		 * 
-		 * LoaderMax.prioritize("myLoaderName", true);</code><br /><br />
+		 * LoaderMax.prioritize("myLoaderName", true);</code></p>
 		 * 
 		 * @param loadNow If <code>true</code> (the default), the loader will start loading immediately (otherwise it is simply placed at the top the queue in any LoaderMax instances to which it belongs).
 		 * @see #load()

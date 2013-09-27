@@ -1,11 +1,12 @@
 /**
- * VERSION: 1.884
- * DATE: 2011-10-06
+ * VERSION: 1.921
+ * DATE: 2012-10-10
  * AS3
  * UPDATES AND DOCS AT: http://www.greensock.com/loadermax/
  **/
 package com.greensock.loading.core {
 	import com.greensock.events.LoaderEvent;
+	import com.greensock.loading.LoaderMax;
 	import com.greensock.loading.LoaderStatus;
 	
 	import flash.events.Event;
@@ -20,9 +21,8 @@ package com.greensock.loading.core {
  * Serves as the base class for all individual loaders (not LoaderMax) like <code>ImageLoader, 
  * XMLLoader, SWFLoader, MP3Loader</code>, etc. There is no reason to use this class on its own. 
  * Please see the documentation for the other classes.
- * <br /><br />
  * 
- * <b>Copyright 2012, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
+ * <p><strong>Copyright 2010-2013, GreenSock. All rights reserved.</strong> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for <a href="http://www.greensock.com/club/">Club GreenSock</a> members, the software agreement that was issued with the membership.</p>
  * 
  * @author Jack Doyle, jack@greensock.com
  */	
@@ -84,7 +84,7 @@ package com.greensock.loading.core {
 				extraParams += (extraParams == "") ? a[1] : "&" + a[1];
 			}
 			if (extraParams != "") {
-				var data:URLVariables = (request.data is URLVariables) ? request.data as URLVariables : new URLVariables();
+				var data:URLVariables = new URLVariables( ((request.data is URLVariables) ? request.data.toString() : null) );
 				a = extraParams.split("&");
 				i = a.length;
 				var pair:Array;
@@ -198,6 +198,9 @@ package com.greensock.loading.core {
 				_setRequestURL(_request, _url);
 				var isLoading:Boolean = Boolean(_status == LoaderStatus.LOADING);
 				_dump(1, LoaderStatus.READY, true);
+				_auditedSize = Boolean(uint(this.vars.estimatedBytes) != 0 && this.vars.auditSize != true);
+				_cachedBytesTotal = (uint(this.vars.estimatedBytes) != 0) ? uint(this.vars.estimatedBytes) : LoaderMax.defaultEstimatedBytes;
+				_cacheIsDirty = true;
 				if (isLoading) {
 					_load();
 				}

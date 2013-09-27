@@ -1,6 +1,35 @@
 CHANGE LOG : GREENSOCK LOADERMAX SYSTEM
 ----------------------------------------
 
+2013-01-08
+----------------------------------------
+XMLLoader			1.931
+LoaderMax			1.931
+	- Fixed issue that could cause redundant childComplete events to get fired from XMLLoader if you defined load="true" inside BOTH a <LoaderMax> node and its child node.
+
+2012-09-05
+----------------------------------------
+VideoLoader			1.93
+	- Worked around issue in Flash Player 11.x that caused a flicker of the video when gotoVideoTime() was called inside a VIDEO_COMPLETE event handler (and when the VideoLoader repeats). This was a bug in the Flash Player itself, and the solution was to wait 1 frame after when the Netstream stops before doing a seek(). VideoLoader automatically handles this internally now. 
+
+2012-08-09
+----------------------------------------
+VideoLoader			1.921
+LoaderItem			1.921
+	- Fixed issue that could prevent the BUFFER_EMPTY event from being dispatched if bufferMode is true
+	- Implemented logic that causes a loader's "auditedSize" property to get reset when its "url" is changed.
+
+2012-04-26
+----------------------------------------
+VideoLoader			1.901
+	- Fixed issue that could cause an error to be thrown if you dispose() a VideoLoader the moment it finishes playing (inside an event handler that is handling the VideoLoader.VIDEO_COMPLETE event).
+
+2012-04-16
+----------------------------------------
+LoaderMax			1.9
+VideoLoader			1.9
+	- Added "stageVideo" special property to VideoLoader to accommodate StageVideo
+
 2012-02-24
 ----------------------------------------
 LoaderMax			1.8993

@@ -1,1 +1,0 @@
-package com.inyc.modules.slideshow.loader {	import com.inyc.modules.slideshow.view.IPhotoView;	import com.inyc.modules.slideshow.view.nav.INavPanel;		import flash.display.MovieClip;			/**	 * @author stevewarren	 */	public interface ISlideshowLoader {		function getNavPanel():INavPanel;		function getPhotoView():IPhotoView;		function getTimeline():MovieClip;	}}
