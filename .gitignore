@@ -15,6 +15,7 @@ gen/
 # Local configuration file (sdk path, etc)
 local.properties
 
+#Custom list
 .DS_Store
 .settings
 deploy/com
